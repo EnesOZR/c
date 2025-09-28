@@ -29,6 +29,7 @@ export default function GhostsPage() {
   const [nameFilter, setNameFilter] = useState("")
   const [minMatches, setMinMatches] = useState("")
   const isClientOnly = process.env.NEXT_PUBLIC_CLIENT_ONLY === "true"
+  const proxyUrl = process.env.NEXT_PUBLIC_PROXY_URL || ""
 
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -47,16 +48,15 @@ export default function GhostsPage() {
     try {
       setLoading(true)
       if (isClientOnly) {
-        const res = await fetch(
-          `https://www.pubgumbra.com/src/api/names.php`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams({ username: streamer }),
-          }
-        )
+        const target = `https://www.pubgumbra.com/src/api/names.php`
+        const url = proxyUrl ? `${proxyUrl}${proxyUrl.endsWith('/') ? '' : '/'}${encodeURI(target)}` : target
+        const res = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({ username: streamer }),
+        })
         if (!res.ok) throw new Error("Failed to fetch ghosts (client-only)")
         const ghosts = await res.json()
         setGhosts(
