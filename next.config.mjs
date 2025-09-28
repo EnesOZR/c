@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+const isGithubPages = process.env.GITHUB_PAGES === 'true'
+const repoBasePath = '/c'
+
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
@@ -7,8 +10,8 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   output: 'export',
-  basePath: '/c',
-  assetPrefix: '/c/',
+  basePath: isGithubPages ? repoBasePath : '',
+  assetPrefix: isGithubPages ? `${repoBasePath}/` : undefined,
   trailingSlash: true,
   images: {
     unoptimized: true,

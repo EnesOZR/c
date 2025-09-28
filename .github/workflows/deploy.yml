@@ -32,7 +32,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: Build
+      - name: Build (GitHub Pages export)
+        env:
+          GITHUB_PAGES: 'true'
         run: npm run build
         
       - name: Upload artifact
