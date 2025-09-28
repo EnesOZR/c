@@ -1,6 +1,7 @@
 /* Wallpaper background for username input section */
 .wallpaper-background {
-  background-image: url('/wallpaper.jpg');
+  /* Respect basePath on GitHub Pages */
+  background-image: url('/c/wallpaper.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

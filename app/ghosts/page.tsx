@@ -28,6 +28,7 @@ export default function GhostsPage() {
   const [error, setError] = useState("")
   const [nameFilter, setNameFilter] = useState("")
   const [minMatches, setMinMatches] = useState("")
+  const isClientOnly = process.env.NEXT_PUBLIC_CLIENT_ONLY === "true"
 
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -45,20 +46,39 @@ export default function GhostsPage() {
   const fetchGhosts = async () => {
     try {
       setLoading(true)
-      const response = await fetch("/api/ghosts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username: streamer }),
-      })
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch ghosts")
+      if (isClientOnly) {
+        const res = await fetch(
+          `https://www.pubgumbra.com/src/api/names.php`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({ username: streamer }),
+          }
+        )
+        if (!res.ok) throw new Error("Failed to fetch ghosts (client-only)")
+        const ghosts = await res.json()
+        setGhosts(
+          Array.isArray(ghosts)
+            ? ghosts
+                .filter((g) => g && typeof g.name === "string" && typeof g.total === "number")
+                .map((g) => ({ name: g.name.trim(), total: Math.max(0, g.total) }))
+                .sort((a, b) => b.total - a.total)
+            : []
+        )
+      } else {
+        const response = await fetch("/api/ghosts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username: streamer }),
+        })
+        if (!response.ok) throw new Error("Failed to fetch ghosts")
+        const data = await response.json()
+        setGhosts(data.ghosts || [])
       }
-
-      const data = await response.json()
-      setGhosts(data.ghosts || [])
     } catch (err) {
       console.error("Error fetching ghosts:", err)
       setError("Ghost oyuncular yüklenirken hata oluştu.")

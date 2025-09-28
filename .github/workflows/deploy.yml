@@ -35,6 +35,8 @@ jobs:
       - name: Build (GitHub Pages export)
         env:
           GITHUB_PAGES: 'true'
+          NEXT_PUBLIC_CLIENT_ONLY: 'true'
+          NEXT_PUBLIC_BASE_PATH: '/c'
         run: npm run build
         
       - name: Upload artifact

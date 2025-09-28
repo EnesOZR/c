@@ -2,6 +2,9 @@ import { type NextRequest, NextResponse } from "next/server"
 import { PUBGAntiGhost } from "@/lib/pubg-service"
 
 export async function POST(request: NextRequest) {
+  if (process.env.NEXT_PUBLIC_CLIENT_ONLY === 'true') {
+    return NextResponse.json({ error: 'API disabled on static hosting' }, { status: 503 })
+  }
   try {
     const { streamer, ghost } = await request.json()
 

@@ -39,6 +39,8 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const router = useRouter()
+  const isClientOnly = process.env.NEXT_PUBLIC_CLIENT_ONLY === "true"
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,19 +54,20 @@ export default function HomePage() {
     setError("")
 
     try {
-      const response = await fetch("/api/ghosts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username: username.trim() }),
-      })
+      if (!isClientOnly) {
+        const response = await fetch("/api/ghosts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username: username.trim() }),
+        })
 
-      if (!response.ok) {
-        throw new Error("API request failed")
+        if (!response.ok) {
+          throw new Error("API request failed")
+        }
       }
 
-      // Navigate to ghosts page
       router.push(`/ghosts?streamer=${encodeURIComponent(username.trim())}`)
     } catch (err) {
       console.error("Error:", err)
