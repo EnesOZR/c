@@ -14,11 +14,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "node -e \"require('fs').mkdirSync('out',{recursive:true}); require('fs').writeFileSync('out/.nojekyll','')\"",
     "start": "next start",
-    "export": "next build",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d out",
+    "export": "next build && next export",
     "lint": "next lint",
     "type-check": "tsc --noEmit"
   },
