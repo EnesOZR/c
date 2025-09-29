@@ -6,10 +6,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  output: 'export',
-  trailingSlash: true,
+  // Vercel: use default output (server functions enabled)
   images: {
-    unoptimized: true,
+    unoptimized: false,
   },
 }
 
