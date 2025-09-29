@@ -4,18 +4,14 @@
   "description": "PUBG Stream Sniper Detection & Match Analysis Tool",
   "author": "oz3R Inc",
   "license": "MIT",
-  "homepage": "https://enesozr.github.io/c",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/EnesOZR/c.git"
-  },
+  
   "keywords": ["pubg", "stream-sniper", "ghost-detection", "match-analysis", "gaming", "streaming"],
   "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "export": "next build && next export",
+    "export": "next build",
     "lint": "next lint",
     "type-check": "tsc --noEmit"
   },
@@ -76,7 +72,6 @@
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "gh-pages": "^6.3.0",
     "postcss": "^8.5",
     "tailwindcss": "^4.1.9",
     "tw-animate-css": "1.3.3",
